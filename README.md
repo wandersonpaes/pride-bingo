@@ -1,73 +1,99 @@
-# React + TypeScript + Vite
+# Bingo da Diversidade
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Site estatico em React para uma dinamica de bingo com cards sobre fatos, termos
+e curiosidades da comunidade LGBTQIAPN+.
 
-Currently, two official plugins are available:
+## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- TypeScript
+- React Router
+- Tailwind CSS
+- Vite
 
-## React Compiler
+## Como rodar
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Instale as dependencias:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Inicie o servidor de desenvolvimento:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Gere a build de producao:
+
+```bash
+npm run build
+```
+
+Rode o lint:
+
+```bash
+npm run lint
+```
+
+## Rotas
+
+- `/`: pagina inicial com as opcoes Comecar, Como funciona? e Cards.
+- `/bingo`: tela principal da dinamica.
+- `/about`: explicacao de como o bingo funciona.
+- `/cards`: listagem dos 100 cards cadastrados.
+
+## Dinamica do bingo
+
+Na rota `/bingo`, a pessoa facilitadora digita manualmente o numero sorteado.
+O app aceita apenas numeros inteiros de 1 a 100 e bloqueia numeros repetidos.
+Cada numero valido adiciona uma bolinha na lista de sorteados e revela o card
+correspondente.
+
+## Cards
+
+Os cards ficam em `src/cards.ts` e seguem este formato:
+
+```ts
+export type BingoCard = {
+  number: number
+  title: string
+  description: string
+  category: 'giria' | 'historia' | 'filme' | 'musica' | 'curiosidade' | 'termo'
+  references: string[]
+}
+```
+
+## Estrutura principal
+
+```text
+src/
+  components/
+    CategoryBadge.tsx
+    Header.tsx
+  pages/
+    AboutPage.tsx
+    BingoPage.tsx
+    CardsPage.tsx
+    HomePage.tsx
+    bingo/
+      AddNumberSection.tsx
+      CurrentCardSection.tsx
+      DrawnNumbersSection.tsx
+    cards/
+      CardGrid.tsx
+  routes/
+    AppRoutes.tsx
+  App.tsx
+  cards.ts
+  main.tsx
+```
+
+## Observacoes
+
+- O site nao usa backend.
+- Os numeros sorteados ficam apenas no estado da pagina e sao perdidos ao
+  recarregar.
+- A listagem em `/cards` mostra numero, titulo, descricao, categoria e
+  referencias quando existirem.
